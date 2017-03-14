@@ -69,22 +69,11 @@ var AuthenticationService = (function () {
         this.http = http;
     }
     AuthenticationService.prototype.login = function (email, password) {
-        return this.http.post('https://paceapi.homesitep2.com/auth', JSON.stringify({ email: email, password: password }))
-            .map(function (response) {
-            // login successful if there's a jwt token in the response
-            var oauth2 = response.json();
-            console.log(oauth2);
-            if (oauth2 && oauth2.access_token && oauth2.token_type) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('access_token', JSON.stringify(oauth2.access_token));
-                localStorage.setItem('token_type', JSON.stringify(oauth2.token_type));
-            }
-        });
+        return this.http.post('/api/pace/auth', { email: email, password: password })
+            .map(function (response) { return response.json(); });
     };
     AuthenticationService.prototype.logout = function () {
-        // remove user from local storage to log user out
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('token_type');
+        // expire oauth token
     };
     AuthenticationService = __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(), 
@@ -211,7 +200,10 @@ var LoginComponent = (function () {
         this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(function (data) {
             console.log(data);
+            //https://layla.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3
+            //https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3
             // redirect to redirectionurl
+            _this.loading = false;
         }, function (error) {
             console.log(error);
             _this.alertService.error("login failed. please try again!!");
