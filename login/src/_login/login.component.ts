@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { URLSearchParams } from '@angular/http';
 import { AlertService } from '../_services/alert.service';
 import { AuthenticationService } from '../_services/authentication.service';
-import { oauth2 } from '../_models/oauth';
+import { oauth2, AlexaContext } from '../_models/oauth';
 
 @Component({
   selector: 'login',
@@ -11,15 +12,17 @@ import { oauth2 } from '../_models/oauth';
 export class LoginComponent implements OnInit {
   model: any = {};
   loading = false;
-  returnUrl: string; //amazon return url
+  alexaContext: AlexaContext;
 
   constructor(private authenticationService: AuthenticationService, private alertService: AlertService) { }
 
   ngOnInit() {
     // reset login status
     this.authenticationService.logout();
-    // get return url from route parameters or default to '/'
-    //this.returnUrl = "";
+    let params = new URLSearchParams(window.location.search);
+    let state = params.get("state") !== null ? params.get("state") : params.get("?state");
+    let redirect_uri = params.get("redirect_uri") !== null ? params.get("redirect_uri") : params.get("?redirect_uri");
+    this.alexaContext = new AlexaContext(state, redirect_uri);
   }
 
   login() {
@@ -29,10 +32,9 @@ export class LoginComponent implements OnInit {
       .subscribe(
       data => {
         console.log(data);
-        //https://layla.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3
-        //https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3
-        // redirect to redirectionurl
         this.loading = false;
+        this.alexaContext.updateOAuth(data);
+        window.location.href = this.alexaContext.getRedirectUrl();
       },
       error => {
         console.log(error);
