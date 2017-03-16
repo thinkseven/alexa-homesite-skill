@@ -3,14 +3,13 @@ var router = express.Router();
 
 router.post('/auth', function (req, res, next) {
 
-    console.log(req.body);
-
     /*
-        res.json({
-            "access_token": "20522e89cb56fbd074fed8d731d80a11",
-            "token_type": "bearer"
-        });
+    res.json({
+        "access_token": "20522e89cb56fbd074fed8d731d80a11",
+        "token_type": "bearer"
+    });
     */
+
 
     /*
     var request = require("request");
