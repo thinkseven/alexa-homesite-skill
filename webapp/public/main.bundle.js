@@ -263,7 +263,7 @@ var AlexaContext = (function () {
     };
     AlexaContext.prototype.getRedirectUrl = function () {
         if (this.IsMatched(this.redirect_uri)) {
-            return decodeURIComponent(this.redirect_uri + "#state" + this.state + "&access_token=" + this.oauth.access_token + "&token_type=" + this.oauth.token_type);
+            return decodeURIComponent(this.redirect_uri + "#state=" + this.state + "&access_token=" + this.oauth.access_token + "&token_type=" + this.oauth.token_type);
         }
         return "";
     };
