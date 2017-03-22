@@ -10,7 +10,12 @@ export class AlexaContext {
     private response_type: string;
     private redirect_uri: string;
     private oauth: oauth2;
-    private redirectPatternMatchUrls: string[] = ["https://layla.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3", "https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3","https%3A%2F%2Flayla.amazon.com%2Fspa%2Fskill%2Faccount-linking-status.html%3FvendorId%3DM354GXLOSXIRZ3","https%3A%2F%2Fpitangui.amazon.com%2Fspa%2Fskill%2Faccount-linking-status.html%3FvendorId%3DM354GXLOSXIRZ3"];
+    private redirectPatternMatchUrls: string[] = [
+            "https://layla.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3",
+            "https://pitangui.amazon.com/spa/skill/account-linking-status.html?vendorId=M354GXLOSXIRZ3",
+            "https%3A%2F%2Flayla.amazon.com%2Fspa%2Fskill%2Faccount-linking-status.html%3FvendorId%3DM354GXLOSXIRZ3",
+            "https%3A%2F%2Fpitangui.amazon.com%2Fspa%2Fskill%2Faccount-linking-status.html%3FvendorId%3DM354GXLOSXIRZ3"
+    ];
 
     constructor(state: string, redirect_uri: string) {
         console.log(state);
